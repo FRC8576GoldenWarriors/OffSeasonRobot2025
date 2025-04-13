@@ -14,7 +14,6 @@ import frc.robot.Subsystems.Elevator;
 public class ElevatorController extends Command {
   private Elevator elevator;
   private double setpoint;
-  private double speed;
 
   private PIDController elevatorPID;
   private ElevatorFeedforward elevatorFF;
@@ -23,12 +22,11 @@ public class ElevatorController extends Command {
   private double FFvoltage;
   private double voltage;
 
-  public ElevatorController(Elevator elevator, double setpoint, double speed) {
+  public ElevatorController(Elevator elevator, double setpoint) {
 
     this.elevator = elevator;
 
     this.setpoint = setpoint;
-    this.speed = speed;
 
     elevatorPID = 
         new PIDController(
@@ -41,7 +39,8 @@ public class ElevatorController extends Command {
         new ElevatorFeedforward(
           Constants.ElevatorConstants.kS, 
           Constants.ElevatorConstants.kG, 
-          Constants.ElevatorConstants.kV);
+          Constants.ElevatorConstants.kV,
+          Constants.ElevatorConstants.kA);
 
     addRequirements(elevator);
   }
@@ -54,14 +53,12 @@ public class ElevatorController extends Command {
   @Override
   public void execute() {
 
-    //Idk how to do feedforward
-    FFvoltage = elevatorFF.calculate(speed);
+    FFvoltage = elevatorFF.calculate(1,0.5);
     PIDvoltage = elevatorPID.calculate(elevator.getHeightMeters(), setpoint);
     
     voltage = PIDvoltage + FFvoltage;
 
     elevator.setVoltage(voltage);
-    elevator.setSpeed(speed);
 
     SmartDashboard.putNumber("Elevator voltage ouput", voltage);
     SmartDashboard.putNumber("Elevator PID voltage output", PIDvoltage);

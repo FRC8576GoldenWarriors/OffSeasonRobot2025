@@ -58,8 +58,7 @@ public class RobotContainer {
         .onTrue(
             new ElevatorController(
                 m_elevator,
-                Constants.ElevatorConstants.L1Position, 
-                Constants.ElevatorConstants.ELEVATOR_SPEED));
+                Constants.ElevatorConstants.L1Position));
 
     //move to l2
     driverController
@@ -67,8 +66,7 @@ public class RobotContainer {
     .onTrue(
         new ElevatorController(
             m_elevator,
-            Constants.ElevatorConstants.L2Position, 
-            Constants.ElevatorConstants.ELEVATOR_SPEED));
+            Constants.ElevatorConstants.L2Position));
 
     //move to l3
     driverController
@@ -76,8 +74,7 @@ public class RobotContainer {
     .onTrue(
         new ElevatorController(
             m_elevator,
-            Constants.ElevatorConstants.L3Position, 
-            Constants.ElevatorConstants.ELEVATOR_SPEED));
+            Constants.ElevatorConstants.L3Position));
 
     //move to l4
     driverController
@@ -85,8 +82,7 @@ public class RobotContainer {
     .onTrue(
         new ElevatorController(
             m_elevator,
-            Constants.ElevatorConstants.L4Position, 
-            Constants.ElevatorConstants.ELEVATOR_SPEED));
+            Constants.ElevatorConstants.L4Position));
   }
 
   public Command getAutonomousCommand() {
