@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -17,8 +18,7 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
 
   private WarriorSparkMax elevatorMotor;
-  private LaserCan laserSensor;
-  private Measurement laserMeasurement;
+  private RelativeEncoder elevatorEncoder;
 
   public Elevator() {
 
@@ -30,19 +30,18 @@ public class Elevator extends SubsystemBase {
           IdleMode.kBrake,
           Constants.ElevatorConstants.ELEVATOR_CURRENT_LIMIT);
 
-    laserSensor =
-        new LaserCan(Constants.ElevatorConstants.LASER_CAN_SENSOR_ID);
+    elevatorEncoder = elevatorMotor.getEncoder();
+    
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    laserMeasurement = laserSensor.getMeasurement();
-    SmartDashboard.putNumber("Elevator Height (Meters)", this.getHeightMeters());
+    SmartDashboard.putNumber("Elevator/Position (Rotations)", getPosition());
   }
 
-  public double getHeightMeters() {
-    return laserMeasurement.distance_mm/1000;
+  public double getPosition() {
+    return elevatorEncoder.getPosition();
   }
 
   public void setSpeed(double speed) {

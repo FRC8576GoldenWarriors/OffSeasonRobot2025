@@ -2,7 +2,11 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -16,7 +20,7 @@ public class Constants {
     public static class ElevatorConstants {
       public static final int ELEVATOR_MOTOR_ID = 79; //! TEMP ID !
       public static final boolean ELEVATOR_MOTOR_INVERTED = false;
-      public static final int ELEVATOR_CURRENT_LIMIT = 45;
+      public static final int ELEVATOR_CURRENT_LIMIT = 45; //! TEMP LIMIT !
       public static final int LASER_CAN_SENSOR_ID = 80; //! TEMP ID !
       public static final double ELEVATOR_SPEED = 0.3;
 
@@ -40,6 +44,53 @@ public class Constants {
 
     }
 
+    public static class EndEffectorConstants {
+      public static class PivotConstants {
+
+        //PID Constants
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        
+        //Feed Forward Constants
+        public static final double kS = 0;
+        public static final double kG = 0;
+        public static final double kV = 0;
+        public static final double kA = 0;
+
+        //Endeffector Angle Setpoints
+        public static final double L1Angle = 0;
+        public static final double L2Angle = 0;
+        public static final double L3Angle = 0;
+        public static final double L4Angle = 0;
+
+        public static final double CORAL_STATION_HEIGHT = 0;
+
+        public static final double COMOffset = 0.0;
+
+        public static class MotorConstants {
+          public static final int END_EFFECTOR_PIVOT_MOTOR_ID = 81; //! TEMP ID !
+          public static final boolean END_EFFECTOR_PIVOT_MOTOR_INVERTED = false;
+          public static final int END_EFFECTOR_PIVOT_MOTOR_CURRENT_LIMIT = 40; //! TEMP LIMIT !
+        }
+
+        public static class EncoderConstants {
+          public static final int PIVOT_ENCODER_DIO = 0; //! TEMP ID !
+          public static final double PIVOT_ENCODER_RANGE = 0;
+          public static final double PIVOT_ENCODER_OFFSET = 0;
+          public static final boolean PIVOT_ENCODER_INVERTED = false;
+        }
+      }
+
+      public static class PinchConstants {
+        public static final int PINCH_MOTOR_ID = 82; //! TEMP ID !
+        public static final boolean PINCH_MOTOR_INVERTED = false;
+        public static final int PINCH_MOTOR_CURRENT_LIMIT = 60; //! TEMP LIMIT !
+
+        public static final int CORAL_DIGITAL_INPUT_DIO = 30; //! TEMP ID !
+      }
+    }
+
     public static class VisionConstants {
 
     public static class CameraConstants {
@@ -48,46 +99,39 @@ public class Constants {
     }
 
     public static class LimelightConstants {
-
-      public static final double FOCAL_LENGTH = 4.1;
-      public static final double REAL_WIDTH = 165.0;
-      public static final double PIXEL_WIDTH = 320.0;
-
-      public static final double ALLOWED_ANGLE_ERROR = 5.0;
-      public static final double ALLOWED_DISTANCE_ERROR = 0.1;
-      public static final double ALLOWED_STRAFE_ERROR = 1.0;
-
-      public static class BargeLimelightConstants {
-
-        public static final String BARGE_NETWORKTABLE_KEY = "limelight-barge";
-
-        public static class DistanceConstants {
-
-          public static final double DESIRED_APRIL_TAG_DISTANCE_BARGE =
-              3.0; // MAKE SURE TO TUNE THIS
-        }
-
-        public static class DimensionConstants {
-          public static final double CAMERA_HEIGHT = Units.inchesToMeters(28); // In inches
-          public static final double CAMERA_PITCH = 29.4; // In degrees
-        }
+      public static class LimelightNameConstants {
+        public static final String LIMELIGHT_REEF_LEFT_NAME = "limelight-reefLeft";
+        public static final String LIMELIGHT_REEF_RIGHT_NAME = "limelight-reefRight";
       }
 
-      public static class ReefLimelightConstants {
+      public static class LimelightPositionConstants {
+        public static final Pose3d LIMELIGHT_REEF_LEFT_POSE 
+          = new Pose3d(
+            new Translation3d(
+              0,
+              0,
+              0
+            ), 
+            new Rotation3d(
+              0,
+              0,
+              0
+            ));
 
-        public static final String REEF_NETWORKTABLE_KEY = "limelight-reef";
-
-        public static class DistanceConstants {
-
-          public static final double DESIRED_APRIL_TAG_DISTANCE_REEF =
-              0.6; // MAKE SURE TO TUNE THIS
-        }
-
-        public static class DimensionConstants {
-          public static final double CAMERA_HEIGHT = Units.inchesToMeters(23); // In inches
-          public static final double CAMERA_PITCH = -45; // In degrees
-        }
+        public static final Pose3d LIMELIGHT_REEF_RIGHT_POSE
+          = new Pose3d(
+            new Translation3d(
+              0,
+              0,
+              0
+            ), 
+            new Rotation3d(
+              0,
+              0,
+              0
+            ));  
       }
+
     }
 
     public static class aprilTagConstants {
@@ -299,24 +343,6 @@ public class Constants {
     }
   }
 
-  public static class EndEffectorConstants {
-    public static final class HardwareConstants {
-      public static final int pincherID = 20;
-      public static final int coralLeftDigiSensorID = 1;
-      public static final int algaeDigiSensorID = 2;
-
-      public static final boolean motorIsInverted = true;
-    }
-
-    public static final class ControlConstants {
-      public static final double pincherAlgaeSpeed = -1.0; // -0.65
-
-      public static final double pincherCoralInSpeed = 1.00;
-      public static final double pincherCoralOutSpeed = -1.00;
-
-      public static final double pincherCoralL3OutSpeed = -0.6;
-    }
-  }
 
   public static final class ArmConstants {
     public static final class HardwareConstants {
