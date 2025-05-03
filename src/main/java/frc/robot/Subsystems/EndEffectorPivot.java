@@ -6,7 +6,6 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,22 +19,25 @@ public class EndEffectorPivot extends SubsystemBase {
 
   /** Creates a new EndEffectorPivot. */
   public EndEffectorPivot() {
-    pivotMotor = 
-      new WarriorSparkMax(
-        Constants.EndEffectorConstants.PivotConstants.MotorConstants.END_EFFECTOR_PIVOT_MOTOR_ID, 
-        MotorType.kBrushless, 
-        Constants.EndEffectorConstants.PivotConstants.MotorConstants.END_EFFECTOR_PIVOT_MOTOR_INVERTED, 
-        IdleMode.kCoast,
-        Constants.EndEffectorConstants.PivotConstants.MotorConstants.END_EFFECTOR_PIVOT_MOTOR_CURRENT_LIMIT);
+    pivotMotor =
+        new WarriorSparkMax(
+            Constants.EndEffectorConstants.PivotConstants.MotorConstants
+                .END_EFFECTOR_PIVOT_MOTOR_ID,
+            MotorType.kBrushless,
+            Constants.EndEffectorConstants.PivotConstants.MotorConstants
+                .END_EFFECTOR_PIVOT_MOTOR_INVERTED,
+            IdleMode.kCoast,
+            Constants.EndEffectorConstants.PivotConstants.MotorConstants
+                .END_EFFECTOR_PIVOT_MOTOR_CURRENT_LIMIT);
 
     pivotAbsEncoder =
-      new DutyCycleEncoder(
-        Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_DIO,
-        Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_RANGE, 
-        Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_OFFSET);
+        new DutyCycleEncoder(
+            Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_DIO,
+            Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_RANGE,
+            Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_OFFSET);
 
-    pivotAbsEncoder.setInverted(Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_INVERTED);
-    
+    pivotAbsEncoder.setInverted(
+        Constants.EndEffectorConstants.PivotConstants.EncoderConstants.PIVOT_ENCODER_INVERTED);
   }
 
   @Override
@@ -76,5 +78,4 @@ public class EndEffectorPivot extends SubsystemBase {
   public double getVelocity() {
     return pivotMotor.getEncoder().getVelocity();
   }
-
 }

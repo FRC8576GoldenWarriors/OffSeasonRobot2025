@@ -6,7 +6,6 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,14 +20,15 @@ public class EndEffector extends SubsystemBase {
   /** Creates a new EndEffector. */
   public EndEffector() {
     pinchMotor =
-      new WarriorSparkMax(
-        Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_ID, 
-        MotorType.kBrushless, 
-        Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_INVERTED, 
-        IdleMode.kCoast,
-        Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_CURRENT_LIMIT);
+        new WarriorSparkMax(
+            Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_ID,
+            MotorType.kBrushless,
+            Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_INVERTED,
+            IdleMode.kCoast,
+            Constants.EndEffectorConstants.PinchConstants.PINCH_MOTOR_CURRENT_LIMIT);
 
-    coralDigitalInput = new DigitalInput(Constants.EndEffectorConstants.PinchConstants.CORAL_DIGITAL_INPUT_DIO);
+    coralDigitalInput =
+        new DigitalInput(Constants.EndEffectorConstants.PinchConstants.CORAL_DIGITAL_INPUT_DIO);
   }
 
   @Override

@@ -7,9 +7,6 @@ package frc.robot.Subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import au.grapplerobotics.LaserCan;
-import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.WarriorSparkMax;
@@ -22,16 +19,15 @@ public class Elevator extends SubsystemBase {
 
   public Elevator() {
 
-    elevatorMotor = 
+    elevatorMotor =
         new WarriorSparkMax(
-          Constants.ElevatorConstants.ELEVATOR_MOTOR_ID,
-          MotorType.kBrushless,
-          Constants.ElevatorConstants.ELEVATOR_MOTOR_INVERTED,
-          IdleMode.kBrake,
-          Constants.ElevatorConstants.ELEVATOR_CURRENT_LIMIT);
+            Constants.ElevatorConstants.ELEVATOR_MOTOR_ID,
+            MotorType.kBrushless,
+            Constants.ElevatorConstants.ELEVATOR_MOTOR_INVERTED,
+            IdleMode.kBrake,
+            Constants.ElevatorConstants.ELEVATOR_CURRENT_LIMIT);
 
     elevatorEncoder = elevatorMotor.getEncoder();
-    
   }
 
   @Override
@@ -51,5 +47,4 @@ public class Elevator extends SubsystemBase {
   public void setVoltage(double voltage) {
     elevatorMotor.setVoltage(voltage);
   }
-
 }

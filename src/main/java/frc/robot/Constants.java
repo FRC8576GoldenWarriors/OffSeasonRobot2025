@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,81 +16,91 @@ import java.util.List;
 
 public class Constants {
 
-    public static class ElevatorConstants {
-      public static final int ELEVATOR_MOTOR_ID = 79; //! TEMP ID !
-      public static final boolean ELEVATOR_MOTOR_INVERTED = false;
-      public static final int ELEVATOR_CURRENT_LIMIT = 45; //! TEMP LIMIT !
-      public static final int LASER_CAN_SENSOR_ID = 80; //! TEMP ID !
-      public static final double ELEVATOR_SPEED = 0.3;
+  public static class ElevatorConstants {
+    public static final int ELEVATOR_MOTOR_ID = 79; // ! TEMP ID !
+    public static final boolean ELEVATOR_MOTOR_INVERTED = false;
+    public static final int ELEVATOR_CURRENT_LIMIT = 45; // ! TEMP LIMIT !
+    public static final int LASER_CAN_SENSOR_ID = 80; // ! TEMP ID !
+    public static final double ELEVATOR_SPEED = 0.3;
 
-      //PID Constants
-      public static final double kP = 1;
-      public static final double kI = 0.1;
-      public static final double kD = 0.01;
-      public static final double ALLOWED_DISTANCE_ERROR = 0.1;
+    // PID Constants
+    public static final double kP = 1;
+    public static final double kI = 0.1;
+    public static final double kD = 0.01;
+    public static final double ALLOWED_DISTANCE_ERROR = 0.1;
 
-      //Feed Forward Constants
+    // Feed Forward Constants
+    public static final double kS = 0;
+    public static final double kG = 0;
+    public static final double kV = 0;
+    public static final double kA = 0;
+
+    // Reef Height Setpoints
+    public static final double L1Position = 0;
+    public static final double L2Position = 0;
+    public static final double L3Position = 0;
+    public static final double L4Position = 0;
+  }
+
+  public static class SimulationMode {
+
+    public static final Mode mode = Mode.SIM;
+
+    public static enum Mode {
+      REAL,
+      SIM,
+      REPLAY
+    }
+  }
+
+  public static class EndEffectorConstants {
+    public static class PivotConstants {
+
+      // PID Constants
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+
+      // Feed Forward Constants
       public static final double kS = 0;
       public static final double kG = 0;
       public static final double kV = 0;
       public static final double kA = 0;
 
-      //Reef Height Setpoints
-      public static final double L1Position = 0;
-      public static final double L2Position = 0;
-      public static final double L3Position = 0;
-      public static final double L4Position = 0;
+      // Endeffector Angle Setpoints
+      public static final double L1Angle = 0;
+      public static final double L2Angle = 0;
+      public static final double L3Angle = 0;
+      public static final double L4Angle = 0;
 
-    }
+      public static final double CORAL_STATION_HEIGHT = 0;
 
-    public static class EndEffectorConstants {
-      public static class PivotConstants {
+      public static final double COMOffset = 0.0;
 
-        //PID Constants
-        public static final double kP = 0;
-        public static final double kI = 0;
-        public static final double kD = 0;
-        
-        //Feed Forward Constants
-        public static final double kS = 0;
-        public static final double kG = 0;
-        public static final double kV = 0;
-        public static final double kA = 0;
-
-        //Endeffector Angle Setpoints
-        public static final double L1Angle = 0;
-        public static final double L2Angle = 0;
-        public static final double L3Angle = 0;
-        public static final double L4Angle = 0;
-
-        public static final double CORAL_STATION_HEIGHT = 0;
-
-        public static final double COMOffset = 0.0;
-
-        public static class MotorConstants {
-          public static final int END_EFFECTOR_PIVOT_MOTOR_ID = 81; //! TEMP ID !
-          public static final boolean END_EFFECTOR_PIVOT_MOTOR_INVERTED = false;
-          public static final int END_EFFECTOR_PIVOT_MOTOR_CURRENT_LIMIT = 40; //! TEMP LIMIT !
-        }
-
-        public static class EncoderConstants {
-          public static final int PIVOT_ENCODER_DIO = 0; //! TEMP ID !
-          public static final double PIVOT_ENCODER_RANGE = 0;
-          public static final double PIVOT_ENCODER_OFFSET = 0;
-          public static final boolean PIVOT_ENCODER_INVERTED = false;
-        }
+      public static class MotorConstants {
+        public static final int END_EFFECTOR_PIVOT_MOTOR_ID = 81; // ! TEMP ID !
+        public static final boolean END_EFFECTOR_PIVOT_MOTOR_INVERTED = false;
+        public static final int END_EFFECTOR_PIVOT_MOTOR_CURRENT_LIMIT = 40; // ! TEMP LIMIT !
       }
 
-      public static class PinchConstants {
-        public static final int PINCH_MOTOR_ID = 82; //! TEMP ID !
-        public static final boolean PINCH_MOTOR_INVERTED = false;
-        public static final int PINCH_MOTOR_CURRENT_LIMIT = 60; //! TEMP LIMIT !
-
-        public static final int CORAL_DIGITAL_INPUT_DIO = 30; //! TEMP ID !
+      public static class EncoderConstants {
+        public static final int PIVOT_ENCODER_DIO = 0; // ! TEMP ID !
+        public static final double PIVOT_ENCODER_RANGE = 0;
+        public static final double PIVOT_ENCODER_OFFSET = 0;
+        public static final boolean PIVOT_ENCODER_INVERTED = false;
       }
     }
 
-    public static class VisionConstants {
+    public static class PinchConstants {
+      public static final int PINCH_MOTOR_ID = 82; // ! TEMP ID !
+      public static final boolean PINCH_MOTOR_INVERTED = false;
+      public static final int PINCH_MOTOR_CURRENT_LIMIT = 60; // ! TEMP LIMIT !
+
+      public static final int CORAL_DIGITAL_INPUT_DIO = 30; // ! TEMP ID !
+    }
+  }
+
+  public static class VisionConstants {
 
     public static class CameraConstants {
       public static final String DRIVER_CAMERA_NAME = "DriverCamera";
@@ -105,33 +114,12 @@ public class Constants {
       }
 
       public static class LimelightPositionConstants {
-        public static final Pose3d LIMELIGHT_REEF_LEFT_POSE 
-          = new Pose3d(
-            new Translation3d(
-              0,
-              0,
-              0
-            ), 
-            new Rotation3d(
-              0,
-              0,
-              0
-            ));
+        public static final Pose3d LIMELIGHT_REEF_LEFT_POSE =
+            new Pose3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
-        public static final Pose3d LIMELIGHT_REEF_RIGHT_POSE
-          = new Pose3d(
-            new Translation3d(
-              0,
-              0,
-              0
-            ), 
-            new Rotation3d(
-              0,
-              0,
-              0
-            ));  
+        public static final Pose3d LIMELIGHT_REEF_RIGHT_POSE =
+            new Pose3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
       }
-
     }
 
     public static class aprilTagConstants {
@@ -343,7 +331,6 @@ public class Constants {
     }
   }
 
-
   public static final class ArmConstants {
     public static final class HardwareConstants {
 
@@ -412,7 +399,7 @@ public class Constants {
       public static final double coralDropSpeed = -0.2;
 
       public static final double pivotEncoderFullRange = 1.0;
-      public static final double pivotEncoderZero = -0.07;//-0.16;
+      public static final double pivotEncoderZero = -0.07; // -0.16;
       public static final boolean pivotEncoderIsInverted = true;
 
       public static final double kP = 34; // 16; // 6.5;

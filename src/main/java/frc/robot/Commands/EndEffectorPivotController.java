@@ -31,18 +31,18 @@ public class EndEffectorPivotController extends Command {
     this.endEffectorPivot = endEffectorPivot;
     this.setpoint = setpoint;
 
-    pivotPID = 
+    pivotPID =
         new PIDController(
-          Constants.EndEffectorConstants.PivotConstants.kP,
-          Constants.EndEffectorConstants.PivotConstants.kI, 
-          Constants.EndEffectorConstants.PivotConstants.kD);
+            Constants.EndEffectorConstants.PivotConstants.kP,
+            Constants.EndEffectorConstants.PivotConstants.kI,
+            Constants.EndEffectorConstants.PivotConstants.kD);
 
     pivotFF =
         new ArmFeedforward(
-          Constants.EndEffectorConstants.PivotConstants.kS, 
-          Constants.EndEffectorConstants.PivotConstants.kG, 
-          Constants.EndEffectorConstants.PivotConstants.kV,
-          Constants.EndEffectorConstants.PivotConstants.kA);
+            Constants.EndEffectorConstants.PivotConstants.kS,
+            Constants.EndEffectorConstants.PivotConstants.kG,
+            Constants.EndEffectorConstants.PivotConstants.kV,
+            Constants.EndEffectorConstants.PivotConstants.kA);
 
     COMOffset = Constants.EndEffectorConstants.PivotConstants.COMOffset;
 
@@ -56,15 +56,16 @@ public class EndEffectorPivotController extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //FF angle radians //IDK HOW TO DO ROTATIONAL FF
+    // FF angle radians //IDK HOW TO DO ROTATIONAL FF
     FFVoltage = pivotFF.calculate(((setpoint + COMOffset - 0.25) * Math.PI * 2), 2.0);
 
     PIDVoltage = pivotPID.calculate(endEffectorPivot.getEncoderPosition(), setpoint);
 
     voltage = FFVoltage + PIDVoltage;
 
-    //soft stops
-    if (endEffectorPivot.getEncoderPosition() > 0.75 || endEffectorPivot.getEncoderPosition() < 0.2){
+    // soft stops
+    if (endEffectorPivot.getEncoderPosition() > 0.75
+        || endEffectorPivot.getEncoderPosition() < 0.2) {
       voltage = 0;
     }
 
@@ -74,7 +75,6 @@ public class EndEffectorPivotController extends Command {
     SmartDashboard.putNumber("Pivot PID Voltage", PIDVoltage);
     SmartDashboard.putNumber("Pivot Voltage", voltage);
     SmartDashboard.putBoolean("Pivot At Setpoint", pivotPID.atSetpoint());
-  
   }
 
   // Called once the command ends or is interrupted.

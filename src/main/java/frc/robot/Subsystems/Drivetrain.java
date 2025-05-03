@@ -7,7 +7,6 @@ package frc.robot.Subsystems;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,7 +14,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -29,56 +27,63 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.Limelight.LimelightHelpers.PoseEstimate;
-
+import frc.robot.RobotContainer;
+import frc.robot.Vision.Limelight.LimelightHelpers.PoseEstimate;
 import java.util.Stack;
-
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 
 public class Drivetrain extends SubsystemBase {
 
   // comp
   private SwerveModule leftFront =
-      new SwerveModule(
-          Constants.SwerveConstants.LEFT_FRONT_DRIVE_ID,
-          Constants.SwerveConstants.LEFT_FRONT_TURN_ID,
-          Constants.SwerveConstants.LEFT_FRONT_DRIVE_INVERTED,
-          Constants.SwerveConstants.LEFT_FRONT_TURN_INVERTED, // true
-          Constants.SwerveConstants.LEFT_FRONT_CANCODER_ID,
-          Constants.SwerveConstants.LEFT_FRONT_OFFSET);
+      (Constants.SimulationMode.mode == Constants.SimulationMode.Mode.REAL)
+          ? new SwerveModule(
+              Constants.SwerveConstants.LEFT_FRONT_DRIVE_ID,
+              Constants.SwerveConstants.LEFT_FRONT_TURN_ID,
+              Constants.SwerveConstants.LEFT_FRONT_DRIVE_INVERTED,
+              Constants.SwerveConstants.LEFT_FRONT_TURN_INVERTED, // true
+              Constants.SwerveConstants.LEFT_FRONT_CANCODER_ID,
+              Constants.SwerveConstants.LEFT_FRONT_OFFSET)
+          : null;
 
   private SwerveModule rightFront =
-      new SwerveModule(
-          Constants.SwerveConstants.RIGHT_FRONT_DRIVE_ID,
-          Constants.SwerveConstants.RIGHT_FRONT_TURN_ID,
-          Constants.SwerveConstants
-              .RIGHT_FRONT_DRIVE_INVERTED, // used to be true, Might have to change back - Om:
-          // 2/14/24
-          Constants.SwerveConstants.RIGHT_FRONT_TURN_INVERTED,
-          Constants.SwerveConstants.RIGHT_FRONT_CANCODER_ID,
-          Constants.SwerveConstants.RIGHT_FRONT_OFFSET);
+      (Constants.SimulationMode.mode == Constants.SimulationMode.Mode.REAL)
+          ? new SwerveModule(
+              Constants.SwerveConstants.RIGHT_FRONT_DRIVE_ID,
+              Constants.SwerveConstants.RIGHT_FRONT_TURN_ID,
+              Constants.SwerveConstants
+                  .RIGHT_FRONT_DRIVE_INVERTED, // used to be true, Might have to change back - Om:
+              // 2/14/24
+              Constants.SwerveConstants.RIGHT_FRONT_TURN_INVERTED,
+              Constants.SwerveConstants.RIGHT_FRONT_CANCODER_ID,
+              Constants.SwerveConstants.RIGHT_FRONT_OFFSET)
+          : null;
 
   private SwerveModule leftBack =
-      new SwerveModule(
-          Constants.SwerveConstants.LEFT_BACK_DRIVE_ID,
-          Constants.SwerveConstants.LEFT_BACK_TURN_ID,
-          Constants.SwerveConstants.LEFT_BACK_DRIVE_INVERTED,
-          Constants.SwerveConstants.LEFT_BACK_TURN_INVERTED,
-          Constants.SwerveConstants.LEFT_BACK_CANCODER_ID,
-          Constants.SwerveConstants.LEFT_BACK_OFFSET);
+      (Constants.SimulationMode.mode == Constants.SimulationMode.Mode.REAL)
+          ? new SwerveModule(
+              Constants.SwerveConstants.LEFT_BACK_DRIVE_ID,
+              Constants.SwerveConstants.LEFT_BACK_TURN_ID,
+              Constants.SwerveConstants.LEFT_BACK_DRIVE_INVERTED,
+              Constants.SwerveConstants.LEFT_BACK_TURN_INVERTED,
+              Constants.SwerveConstants.LEFT_BACK_CANCODER_ID,
+              Constants.SwerveConstants.LEFT_BACK_OFFSET)
+          : null;
 
   private SwerveModule rightBack =
-      new SwerveModule(
-          Constants.SwerveConstants.RIGHT_BACK_DRIVE_ID,
-          Constants.SwerveConstants.RIGHT_BACK_TURN_ID,
-          Constants.SwerveConstants
-              .RIGHT_BACK_DRIVE_INVERTED, // used to be true, Might have to change back - Om:
-          // 2/14/24
-          Constants.SwerveConstants.RIGHT_BACK_TURN_INVERTED,
-          Constants.SwerveConstants.RIGHT_BACK_CANCODER_ID,
-          Constants.SwerveConstants.RIGHT_BACK_OFFSET);
+      (Constants.SimulationMode.mode == Constants.SimulationMode.Mode.REAL)
+          ? new SwerveModule(
+              Constants.SwerveConstants.RIGHT_BACK_DRIVE_ID,
+              Constants.SwerveConstants.RIGHT_BACK_TURN_ID,
+              Constants.SwerveConstants
+                  .RIGHT_BACK_DRIVE_INVERTED, // used to be true, Might have to change back - Om:
+              // 2/14/24
+              Constants.SwerveConstants.RIGHT_BACK_TURN_INVERTED,
+              Constants.SwerveConstants.RIGHT_BACK_CANCODER_ID,
+              Constants.SwerveConstants.RIGHT_BACK_OFFSET)
+          : null;
 
   // // practice
   // private SwerveModule leftFront =
@@ -132,7 +137,10 @@ public class Drivetrain extends SubsystemBase {
 
   private Pigeon2 gyro = new Pigeon2(Constants.SwerveConstants.PIGEON_ID);
 
-  private static final Drivetrain drivetrain = new Drivetrain();
+  private static final Drivetrain drivetrain =
+      (Constants.SimulationMode.mode == Constants.SimulationMode.Mode.REAL)
+          ? new Drivetrain()
+          : null;
 
   private static Stack<Double> gyroStack = new Stack<Double>();
   private RobotConfig config;
@@ -143,7 +151,7 @@ public class Drivetrain extends SubsystemBase {
           Constants.SwerveConstants.DRIVE_KINEMATICS,
           getHeadingRotation2d(),
           getModulePositions(),
-          new Pose2d());
+          new Pose2d(new Translation2d(4, 2), new Rotation2d(0)));
   private Field2d field;
   // private final StructPublisher<Pose2d> m_posePublish;
   private final StructArrayPublisher<SwerveModuleState> m_ModulePublisherIn;
@@ -291,9 +299,9 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // RobotContainer.poseEstimator.updateOdometry(getHeadingRotation2d(), getModulePositions());
-    
+
     double yaw = gyro.getYaw().getValueAsDouble();
-    
+
     SmartDashboard.putNumber("Robot Angle", getHeading());
     Logger.recordOutput("Drivetrain/Robot Angle", getHeading());
     field.setRobotPose(getPose2d());
@@ -310,22 +318,22 @@ public class Drivetrain extends SubsystemBase {
 
     gyroStack.push(getHeading());
 
-    if(!RobotContainer.driverController.getHID().getStartButtonPressed()||RobotState.isTeleop()){
-      if(gyroStack.size()>3&&gyro.getResetOccurredChecker().getAsBoolean()){
+    if (!RobotContainer.driverController.getHID().getStartButtonPressed()
+        || RobotState.isTeleop()) {
+      if (gyroStack.size() > 3 && gyro.getResetOccurredChecker().getAsBoolean()) {
         double gyroCurrent = gyroStack.pop();
         double gyroPrev1 = gyroStack.pop();
         double gyroPrev2 = gyroStack.pop();
-        if(Math.abs(gyroCurrent)-Math.abs(gyroPrev1)>50){
+        if (Math.abs(gyroCurrent) - Math.abs(gyroPrev1) > 50) {
           setHeading(gyroPrev1);
           gyroStack.push(gyroPrev2);
           gyroStack.push(gyroPrev1);
-        }
-        else{
+        } else {
           setHeading(gyroPrev2);
           gyroStack.push(gyroPrev2);
         }
       }
-  }
+    }
     // var gyroCurr = gyroStack.pop();
     // if (gyroStack.size() == 3) {
     //   var gyroPrev = gyroStack.pop();
@@ -335,7 +343,6 @@ public class Drivetrain extends SubsystemBase {
     // }
     // gyroStack.push(gyroCurr);
 
-    
     // rates 2 is yaw (XYZ in order )
     /*SmartDashboard.putString("Angular Speed", new DecimalFormat("#.00").format((yaw/ 180)) + "pi rad/s");
     // Logger.recordOutput("Robot Angle", getHeading());
@@ -559,6 +566,18 @@ public class Drivetrain extends SubsystemBase {
     if (visionPose == null) return;
 
     odometry.addVisionMeasurement(visionPose.pose, visionPose.timestampSeconds);
+  }
+
+  public void addVisionMeasurement(EstimatedRobotPose visionPose) {
+    if (visionPose == null) return;
+
+    odometry.addVisionMeasurement(visionPose.estimatedPose.toPose2d(), visionPose.timestampSeconds);
+  }
+
+  public void addVisionMeasurement(Pose2d visionPose, double timestampSeconds) {
+    if (visionPose == null) return;
+
+    odometry.addVisionMeasurement(visionPose, timestampSeconds);
   }
 
   public void drive(

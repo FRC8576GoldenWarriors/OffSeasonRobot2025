@@ -27,19 +27,19 @@ public class ElevatorController extends Command {
     this.elevator = elevator;
     this.setpoint = setpoint;
 
-    elevatorPID = 
+    elevatorPID =
         new PIDController(
-          Constants.ElevatorConstants.kP,
-          Constants.ElevatorConstants.kI, 
-          Constants.ElevatorConstants.kD);
+            Constants.ElevatorConstants.kP,
+            Constants.ElevatorConstants.kI,
+            Constants.ElevatorConstants.kD);
     elevatorPID.setTolerance(Constants.ElevatorConstants.ALLOWED_DISTANCE_ERROR);
 
     elevatorFF =
         new ElevatorFeedforward(
-          Constants.ElevatorConstants.kS, 
-          Constants.ElevatorConstants.kG, 
-          Constants.ElevatorConstants.kV,
-          Constants.ElevatorConstants.kA);
+            Constants.ElevatorConstants.kS,
+            Constants.ElevatorConstants.kG,
+            Constants.ElevatorConstants.kV,
+            Constants.ElevatorConstants.kA);
 
     addRequirements(elevator);
   }
@@ -52,9 +52,9 @@ public class ElevatorController extends Command {
   @Override
   public void execute() {
 
-    FFvoltage = elevatorFF.calculate(1,0.5);
+    FFvoltage = elevatorFF.calculate(1, 0.5);
     PIDvoltage = elevatorPID.calculate(elevator.getPosition(), setpoint);
-    
+
     voltage = PIDvoltage + FFvoltage;
 
     elevator.setVoltage(voltage);

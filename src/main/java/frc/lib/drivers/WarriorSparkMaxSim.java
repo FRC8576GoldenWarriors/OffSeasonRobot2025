@@ -5,6 +5,7 @@
 package frc.lib.drivers;
 
 import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
@@ -16,11 +17,13 @@ public class WarriorSparkMaxSim extends SparkMaxSim {
 
   public WarriorSparkMaxSim(WarriorSparkMax motorToSim, DCMotor gearBox) {
     super(motorToSim, gearBox);
+    RoboRioSim.setVInVoltage(13);
     this.updateInterval = 0.02; // default 20ms interval
   }
 
   public WarriorSparkMaxSim(WarriorSparkMax motorToSim, DCMotor gearBox, double updateInterval) {
     super(motorToSim, gearBox);
+    RoboRioSim.setVInVoltage(13);
     this.updateInterval = updateInterval;
   }
 
@@ -30,7 +33,10 @@ public class WarriorSparkMaxSim extends SparkMaxSim {
   }
 
   public void iterate(double velocity) {
-    this.iterate(velocity, RoboRioSim.getVInCurrent(), this.updateInterval);
+    this.iterate(
+        velocity,
+        BatterySim.calculateDefaultBatteryLoadedVoltage(RoboRioSim.getVInCurrent()),
+        this.updateInterval);
     updateVolatge();
   }
 
@@ -53,5 +59,13 @@ public class WarriorSparkMaxSim extends SparkMaxSim {
 
   public double getAngle() {
     return this.getAbsoluteEncoderSim().getPosition();
+  }
+
+  public void set(double speed) {
+    this.iterate(speed);
+  }
+
+  public void setIdleMode(IdleMode idleMode) {
+    this.setIdleMode(idleMode);
   }
 }
